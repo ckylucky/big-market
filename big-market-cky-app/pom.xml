@@ -10,7 +10,6 @@
     <artifactId>big-market-cky-app</artifactId>
 
     <packaging>jar</packaging>
-
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -89,6 +88,7 @@
             <artifactId>big-market-cky-infrastructure</artifactId>
         </dependency>
     </dependencies>
+
 
     <build>
         <finalName>big-market-cky-app</finalName>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cky.infrastructure.persistent.dao.IAwardDao">
+
+    <resultMap id="DataMap" type="com.cky.infrastructure.persistent.po.Award">
+        <id column="id" property="id"/>
+        <result column="" property="awardId"/>
+        <result column="" property="awardKey"/>
+        <result column="" property="awardConfig"/>
+        <result column="" property="awardDesc"/>
+        <result column="" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+
+
+    <select id="queryAwardList"  resultMap="DataMap">
+        SELECT * from strategy limit 10
+    </select>
+
+</mapper>
