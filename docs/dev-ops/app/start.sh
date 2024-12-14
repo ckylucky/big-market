@@ -1,5 +1,5 @@
-CONTAINER_NAME=big-market-cky
-IMAGE_NAME=system/big-market-cky:1.0-SNAPSHOT
+CONTAINER_NAME=big-market
+IMAGE_NAME=system/big-market:1.0-SNAPSHOT
 PORT=8091
 
 echo "容器部署开始 ${CONTAINER_NAME}"

@@ -1,1 +1,1 @@
-docker stop big-market-cky
+docker stop big-market

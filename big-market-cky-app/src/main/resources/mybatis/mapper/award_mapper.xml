@@ -15,7 +15,7 @@
 
 
     <select id="queryAwardList"  resultMap="DataMap">
-        SELECT * from strategy limit 10
+        SELECT * from award limit 10
     </select>
 
 </mapper>

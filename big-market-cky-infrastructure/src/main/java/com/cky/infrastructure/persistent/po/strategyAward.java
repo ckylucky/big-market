@@ -26,9 +26,9 @@ public class strategyAward {
     /* 抽奖奖品副标题*/
     private String awardSubtitle;
     /* 奖品库存总量*/
-    private String awardCount;
+    private Integer awardCount;
     /*奖品库存剩余*/
-    private String awardCountSurplus;
+    private Integer awardCountSurplus;
     /* 奖品中奖概率*/
     private BigDecimal awardRate;
     /*规则模型，rule配置的模型同步到此表，便于使用*/

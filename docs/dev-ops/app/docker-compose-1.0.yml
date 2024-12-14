@@ -4,8 +4,8 @@ version: '3.8'
 # 你需要修改system为你自身系统的仓库名
 services:
   x-api-app:
-    image: system/big-market-cky:1.0-SNAPSHOT
-    container_name: big-market-cky
+    image: system/big-market:1.0-SNAPSHOT
+    container_name: big-market
     restart: on-failure
     ports:
       - "8091:8091"

@@ -1,5 +1,6 @@
 package com.cky.infrastructure.persistent.dao;
 
+import com.cky.infrastructure.persistent.po.Award;
 import com.cky.infrastructure.persistent.po.strategyAward;
 import com.google.errorprone.annotations.Var;
 import org.apache.ibatis.annotations.Mapper;
@@ -19,4 +20,8 @@ import java.util.List;
 public interface IstrategyAwardDao {
 
     List<strategyAward> queryStrategyAwardList();
+
+    List<Award> queryStrategyByStrategyId();
+
+    List<strategyAward> queryStrategyAwardListByStrategyId(Long strategyId);
 }
