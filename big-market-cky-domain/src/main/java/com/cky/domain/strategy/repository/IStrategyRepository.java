@@ -3,6 +3,7 @@ package com.cky.domain.strategy.repository;
 import com.cky.domain.strategy.model.entity.StrategyAwardEntity;
 import com.cky.domain.strategy.model.entity.StrategyEntity;
 import com.cky.domain.strategy.model.entity.StrategyRuleEntity;
+import com.cky.domain.strategy.model.valobj.StrategyAwardRuleModelVO;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,4 +28,6 @@ public interface IStrategyRepository {
 
     StrategyRuleEntity queryStrategyRule(Long strategyId, String ruleWeight);
     String queryStrategyRuleValue(Long strategyId, Integer awardId, String ruleModel);
+
+    StrategyAwardRuleModelVO queryStartegyAwardRuleModels(StrategyAwardEntity build);
 }

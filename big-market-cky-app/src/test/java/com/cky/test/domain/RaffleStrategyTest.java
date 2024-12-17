@@ -5,11 +5,13 @@ import com.alibaba.fastjson.JSON;
 import com.cky.domain.strategy.model.entity.RaffleAwardEntity;
 import com.cky.domain.strategy.model.entity.RaffleFactorEntity;
 import com.cky.domain.strategy.service.IRaffleStrategy;
+import com.cky.domain.strategy.service.rule.impl.RuleLockLogicFilter;
 import com.cky.domain.strategy.service.rule.impl.RuleWeightLogicFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -31,17 +33,20 @@ public class RaffleStrategyTest {
 
     @Resource
     private RuleWeightLogicFilter ruleWeightLogicFilter;
+    @Autowired
+    private RuleLockLogicFilter ruleLockLogicFilter;
 
     @Before
     public void setUp() {
         ReflectionTestUtils.setField(ruleWeightLogicFilter, "userScore", 4500L);
+        ReflectionTestUtils.setField(ruleLockLogicFilter, "userRaffleCount", 0L);
     }
 
     @Test
     public void test_performRaffle() {
         RaffleFactorEntity raffleFactorEntity = RaffleFactorEntity.builder()
                 .userId("cky")
-                .strategyId(10002L)
+                .strategyId(10003L)
                 .build();
 
         RaffleAwardEntity raffleAwardEntity = raffleStrategy.performRaffle(raffleFactorEntity);

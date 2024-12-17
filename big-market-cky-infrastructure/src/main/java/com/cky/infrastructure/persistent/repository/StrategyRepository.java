@@ -3,6 +3,7 @@ package com.cky.infrastructure.persistent.repository;
 import com.cky.domain.strategy.model.entity.StrategyAwardEntity;
 import com.cky.domain.strategy.model.entity.StrategyEntity;
 import com.cky.domain.strategy.model.entity.StrategyRuleEntity;
+import com.cky.domain.strategy.model.valobj.StrategyAwardRuleModelVO;
 import com.cky.domain.strategy.repository.IStrategyRepository;
 import com.cky.infrastructure.persistent.dao.IstrategyAwardDao;
 import com.cky.infrastructure.persistent.dao.IstrategyDao;
@@ -144,5 +145,14 @@ public class StrategyRepository implements IStrategyRepository {
         strategyRule.setAwardId(awardId);
         strategyRule.setRuleModel(ruleModel);
         return strategyRuleDao.queryStrategyRuleValue(strategyRule);
+    }
+
+    @Override
+    public StrategyAwardRuleModelVO queryStartegyAwardRuleModels(StrategyAwardEntity strategyAwardEntity) {
+        strategyAward strategyAward=new strategyAward();
+        strategyAward.setAwardId(strategyAwardEntity.getAwardId());
+        strategyAward.setStrategyId(strategyAwardEntity.getStrategyId());
+        String ruleModels =strategyAwardDao.queryStartegyAwardRuleModels(strategyAward);
+        return StrategyAwardRuleModelVO.builder().ruleModels(ruleModels).build();
     }
 }

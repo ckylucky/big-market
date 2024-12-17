@@ -26,7 +26,7 @@ public class assembleLotteryStrategyTest {
 
     @Test
     public void testArmory(){
-        boolean success = strategyArmory.assembleLotteryStrategy(10002L);
+        boolean success = strategyArmory.assembleLotteryStrategy(10003L);
         log.info("测试结果：{}", success);
     }
 
