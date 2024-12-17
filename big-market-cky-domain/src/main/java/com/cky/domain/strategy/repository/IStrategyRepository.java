@@ -1,6 +1,8 @@
 package com.cky.domain.strategy.repository;
 
 import com.cky.domain.strategy.model.entity.StrategyAwardEntity;
+import com.cky.domain.strategy.model.entity.StrategyEntity;
+import com.cky.domain.strategy.model.entity.StrategyRuleEntity;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,9 +17,14 @@ import java.util.List;
 public interface IStrategyRepository {
     List<StrategyAwardEntity> queryStrategyAwardList(Long strategyId);
 
-    void storeStrategyAwardSearchRateTable(Long strategyId, int size, HashMap<Integer, Integer> shuffleStartegyAwardSearchTables);
+    void storeStrategyAwardSearchRateTable(String key, int size, HashMap<Integer, Integer> shuffleStartegyAwardSearchTables);
 
-    int getRateRange(long strategyId);
+    int getRateRange(String key);
+    int getRateRange(Long StrategyId);
+    Integer getStrategyAwardAssemble(String key, int i);
 
-    Integer getStrategyAwardAssemble(long strategyId, int i);
+    StrategyEntity queryStrategyEntityByStrategyId(Long strategyId);
+
+    StrategyRuleEntity queryStrategyRule(Long strategyId, String ruleWeight);
+    String queryStrategyRuleValue(Long strategyId, Integer awardId, String ruleModel);
 }
