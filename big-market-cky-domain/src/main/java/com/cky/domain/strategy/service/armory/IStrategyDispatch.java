@@ -8,19 +8,21 @@ package com.cky.domain.strategy.service.armory;
  * @Version 1.0
  */
 public interface IStrategyDispatch {
-    /**
-     * 由strategyid 得到一个范围随机值 随机得到奖品id
-     * @param strategyId
-     * @return
-     */
-    Integer getRandomAwardId(long strategyId);
+    Integer getRandomAwardId(Long strategyId);
 
     /**
+     * 获取抽奖策略装配的随机结果
      *
-     * @param strategyId 策略id
-     * @param ruleWeightValue  权重值
-     * @return
+     * @param strategyId 权重ID
+     * @return 抽奖结果
      */
     Integer getRandomAwardId(Long strategyId, String ruleWeightValue);
 
+    /**
+     * 获取抽奖策略装配的随机结果
+     *
+     * @param key = strategyId + _ + ruleWeightValue；
+     * @return 抽奖结果
+     */
+    Integer getRandomAwardId(String key);
 }

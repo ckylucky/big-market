@@ -30,9 +30,6 @@ public class assembleLotteryStrategyTest {
         log.info("测试结果：{}", success);
     }
 
-    @Test
-    public void test_getAssembleRandomVal() {
-        log.info("测试结果：{} - 奖品ID值", strategyArmory.getRandomAwardId(10002L));
-    }
+
 
 }

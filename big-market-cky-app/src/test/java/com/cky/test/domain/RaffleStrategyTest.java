@@ -4,9 +4,8 @@ package com.cky.test.domain;
 import com.alibaba.fastjson.JSON;
 import com.cky.domain.strategy.model.entity.RaffleAwardEntity;
 import com.cky.domain.strategy.model.entity.RaffleFactorEntity;
+
 import com.cky.domain.strategy.service.IRaffleStrategy;
-import com.cky.domain.strategy.service.rule.impl.RuleLockLogicFilter;
-import com.cky.domain.strategy.service.rule.impl.RuleWeightLogicFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,16 +30,8 @@ public class RaffleStrategyTest {
     @Resource
     private IRaffleStrategy raffleStrategy;
 
-    @Resource
-    private RuleWeightLogicFilter ruleWeightLogicFilter;
-    @Autowired
-    private RuleLockLogicFilter ruleLockLogicFilter;
 
-    @Before
-    public void setUp() {
-        ReflectionTestUtils.setField(ruleWeightLogicFilter, "userScore", 4500L);
-        ReflectionTestUtils.setField(ruleLockLogicFilter, "userRaffleCount", 0L);
-    }
+
 
     @Test
     public void test_performRaffle() {
