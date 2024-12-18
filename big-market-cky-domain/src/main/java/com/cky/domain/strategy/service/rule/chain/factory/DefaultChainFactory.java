@@ -43,6 +43,7 @@ public class DefaultChainFactory {
         for (int i = 1; i < ruleModels.length; i++) {
             ILogicChain nextChain = logicChainGroup.get(ruleModels[i]);
             current = current.appendNext(nextChain);
+
         }
 
         // 责任链的最后装填默认责任链

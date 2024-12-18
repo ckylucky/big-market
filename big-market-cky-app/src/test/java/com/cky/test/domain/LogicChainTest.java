@@ -32,13 +32,13 @@ public class LogicChainTest {
     @Resource
     private DefaultChainFactory defaultChainFactory;
 
-//    @Before
-//    public void setUp() {
+    @Before
+    public void setUp() {
 //        // 策略装配 100001、100002、100003
 ////        log.info("测试结果：{}", strategyArmory.assembleLotteryStrategy(10001L));
-//        log.info("测试结果：{}", strategyArmory.assembleLotteryStrategy(10002L));
+        log.info("测试结果：{}", strategyArmory.assembleLotteryStrategy(10002L));
 //        log.info("测试结果：{}", strategyArmory.assembleLotteryStrategy(10003L));
-//    }
+    }
 
     @Test
     public void test_LogicChain_rule_blacklist() {
@@ -53,14 +53,14 @@ public class LogicChainTest {
         ReflectionTestUtils.setField(ruleWeightLogicChain, "userScore", 4900L);
 
         ILogicChain logicChain = defaultChainFactory.openLogicChain(10002L);
-        Integer awardId = logicChain.logic("xiaofuge", 10002L);
+        Integer awardId = logicChain.logic("cky", 10002L);
         log.info("测试结果：{}", awardId);
     }
 
     @Test
     public void test_LogicChain_rule_default() {
         ILogicChain logicChain = defaultChainFactory.openLogicChain(10002L);
-        Integer awardId = logicChain.logic("xiaofuge", 10002L);
+        Integer awardId = logicChain.logic("cky", 10002L);
         log.info("测试结果：{}", awardId);
     }
 
