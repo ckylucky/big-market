@@ -128,6 +128,14 @@ public class StrategyRepository implements IStrategyRepository {
         strategyRuleReq.setStrategyId(strategyId);
         strategyRuleReq.setRuleModel(ruleModel);
         strategyRule strategyRuleRes = strategyRuleDao.queryStrategyRule(strategyRuleReq);
+        // 检查返回结果是否为 null
+        if (strategyRuleRes == null) {
+            // 处理未找到的情况，可以选择抛出异常或返回默认值
+            // 例如，抛出自定义异常
+            return null;
+            // 或者返回一个默认的 StrategyRuleEntity
+            // return StrategyRuleEntity.builder().build();
+        }
         return StrategyRuleEntity.builder()
                 .strategyId(strategyRuleRes.getStrategyId())
                 .awardId(strategyRuleRes.getAwardId())
