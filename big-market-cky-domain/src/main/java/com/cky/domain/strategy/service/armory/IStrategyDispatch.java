@@ -25,4 +25,6 @@ public interface IStrategyDispatch {
      * @return 抽奖结果
      */
     Integer getRandomAwardId(String key);
+
+    Boolean subtractionAwardStock(Long strategyId, Integer awardId);
 }

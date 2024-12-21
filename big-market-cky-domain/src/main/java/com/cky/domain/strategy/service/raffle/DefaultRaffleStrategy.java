@@ -4,6 +4,7 @@ import com.cky.domain.strategy.model.entity.RaffleAwardEntity;
 import com.cky.domain.strategy.model.entity.StrategyAwardEntity;
 import com.cky.domain.strategy.model.valobj.RuleTreeVO;
 import com.cky.domain.strategy.model.valobj.StrategyAwardRuleModelVO;
+import com.cky.domain.strategy.model.valobj.StrategyAwardStockKeyVO;
 import com.cky.domain.strategy.repository.IStrategyRepository;
 import com.cky.domain.strategy.service.AbstractRaffleStrategy;
 import com.cky.domain.strategy.service.armory.IStrategyDispatch;
@@ -66,4 +67,13 @@ public class DefaultRaffleStrategy extends AbstractRaffleStrategy {
     }
 
 
+    @Override
+    public StrategyAwardStockKeyVO takeQueueValue() throws InterruptedException {
+        return repository.takeQueueValue();
+    }
+
+    @Override
+    public void updateStrategyAwardStock(Long strategyId, Integer awardId) {
+        repository.updateStrategyAwardStock(strategyId, awardId);
+    }
 }

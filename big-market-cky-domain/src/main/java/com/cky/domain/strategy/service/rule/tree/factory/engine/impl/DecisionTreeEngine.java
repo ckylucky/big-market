@@ -37,15 +37,16 @@ public class DecisionTreeEngine implements IDecisionTreeEngine {
         // 获取基础信息
         String nextNode = ruleTreeVO.getTreeRootRuleNode();//根节点
         Map<String, RuleTreeNodeVO> treeNodeMap = ruleTreeVO.getTreeNodeMap();//规则树的map
-
         // 获取起始节点「根节点记录了第一个要执行的规则」
         RuleTreeNodeVO ruleTreeNode = treeNodeMap.get(nextNode);
+        //获得每个节点的 rule_value值，以便后续具体的实现去根据其来操作
+        String ruleValue = ruleTreeNode.getRuleValue();
         while (null != nextNode) {
             // 获取对应的决策节点  根据树节点的规则key  通过我们的map获得决策的具体实现类
             ILogicTreeNode logicTreeNode = logicTreeNodeGroup.get(ruleTreeNode.getRuleKey());
 
             // 决策节点计算  得到信息 包括放行或者接管 以及对应的抽奖奖品id和规则
-            DefaultTreeFactory.TreeActionEntity logicEntity = logicTreeNode.logic(userId, strategyId, awardId);
+            DefaultTreeFactory.TreeActionEntity logicEntity = logicTreeNode.logic(userId, strategyId, awardId,ruleValue);
             RuleLogicCheckTypeVO ruleLogicCheckTypeVO = logicEntity.getRuleLogicCheckType();
             strategyAwardData = logicEntity.getStrategyAwardData();
             log.info("决策树引擎【{}】treeId:{} node:{} code:{}", ruleTreeVO.getTreeName(), ruleTreeVO.getTreeId(), nextNode, ruleLogicCheckTypeVO.getCode());
@@ -67,7 +68,9 @@ public class DecisionTreeEngine implements IDecisionTreeEngine {
                 return nodeLine.getRuleNodeTo();
             }
         }
-        throw new RuntimeException("决策树引擎，nextNode 计算失败，未找到可执行节点！");
+        //rule_stock节点扣减完库存后，无法正常退出。因为这种情况下就是到达不了rule_luck_award的，会导致抛出异常  如果都不可达，应该返回null
+        //throw new RuntimeException("决策树引擎，nextNode 计算失败，未找到可执行节点！");
+        return null;
     }
 
     public boolean decisionLogic(String matterValue, RuleTreeNodeLineVO nodeLine) {

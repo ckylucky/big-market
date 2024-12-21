@@ -246,4 +246,7 @@ public interface IRedisService {
      */
     <T> RBloomFilter<T> getBloomFilter(String key);
 
+    Boolean setNx(String lockKey);
+
+    void setAtomicLong(String cacheKey, int awardCount);
 }
