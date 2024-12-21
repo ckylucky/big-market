@@ -2,10 +2,14 @@ package com.cky.domain.strategy.service.rule.tree.impl;
 
 
 import com.cky.domain.strategy.model.valobj.RuleLogicCheckTypeVO;
+import com.cky.domain.strategy.repository.IStrategyRepository;
+import com.cky.domain.strategy.service.rule.chain.factory.DefaultChainFactory;
 import com.cky.domain.strategy.service.rule.tree.ILogicTreeNode;
 import com.cky.domain.strategy.service.rule.tree.factory.DefaultTreeFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 /**
  * @author Fuzhengwei bugstack.cn @小傅哥
@@ -16,11 +20,14 @@ import org.springframework.stereotype.Component;
 @Component("rule_lock")
 public class RuleLockLogicTreeNode implements ILogicTreeNode {
     // 用户抽奖次数，后续完成这部分流程开发的时候，从数据库/Redis中读取
-    private Long userRaffleCount = 10L;
-    @Override
-    public DefaultTreeFactory.TreeActionEntity logic(String userId, Long strategyId, Integer awardId,String ruleValue) {
-        log.info("规则过滤-次数锁 userId:{} strategyId:{} awardId:{}", userId, strategyId, awardId);
+    private Long userRaffleCount = 2L;
 
+    @Resource
+    private IStrategyRepository repository;
+    @Override
+    public DefaultTreeFactory.TreeActionEntity logic(String userId, Long strategyId, Integer awardId,String NodeKeyValue) {
+        log.info("规则过滤-次数锁 userId:{} strategyId:{} awardId:{}", userId, strategyId, awardId);
+        String ruleValue = repository.queryStrategyRuleValue(strategyId, awardId, DefaultChainFactory.LogicModel.RULE_LOCK.getCode());
         long raffleCount = 0L;
         try {
             raffleCount = Long.parseLong(ruleValue);
