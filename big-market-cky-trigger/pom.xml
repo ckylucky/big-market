@@ -36,6 +36,12 @@
             <groupId>com.cky</groupId>
             <artifactId>big-market-cky-domain</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.cky</groupId>
+            <artifactId>big-market-cky-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>

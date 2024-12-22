@@ -1,4 +1,4 @@
-package com.cky.domain.strategy.service;
+package com.cky.domain.strategy.service.raffle;
 
 
 import com.cky.domain.strategy.model.entity.RaffleAwardEntity;

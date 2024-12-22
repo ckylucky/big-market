@@ -2,7 +2,7 @@ package com.cky.trigger.job;
 
 
 import com.cky.domain.strategy.model.valobj.StrategyAwardStockKeyVO;
-import com.cky.domain.strategy.service.IRaffleStock;
+import com.cky.domain.strategy.service.raffle.IRaffleStock;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;

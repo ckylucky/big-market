@@ -93,19 +93,29 @@ public class StrategyArmory implements IStrategyArmory, IStrategyDispatch {
      * @param strategyAwardEntities  装配的策略奖品实体
      * @return
      */
+    /**
+     * 转换计算，只根据小数位来计算。如【0.01返回100】、【0.009返回1000】、【0.0018返回10000】
+     */
+    private double convert(double min) {
+        double current = min;
+        double max = 1;
+        while (current < 1) {
+            current = current * 10;
+            max = max * 10;
+        }
+        return max;
+    }
     public boolean assembleLotteryStrategy(String key, List<StrategyAwardEntity> strategyAwardEntities) {
-        //1、找到最小概率值
-        BigDecimal minRate = strategyAwardEntities.stream().map(StrategyAwardEntity::getAwardRate)
+
+
+        // 1. 获取最小概率值
+        BigDecimal minAwardRate = strategyAwardEntities.stream()
+                .map(StrategyAwardEntity::getAwardRate)
                 .min(BigDecimal::compareTo)
                 .orElse(BigDecimal.ZERO);
 
-        //2、获取概率总和
-        BigDecimal totalAwardRate = strategyAwardEntities.stream()
-                .map(StrategyAwardEntity::getAwardRate)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-
-        //3、得到 概率范围 百分位 千分位等
-        BigDecimal rateRange = totalAwardRate.divide(minRate, 0, RoundingMode.CEILING);
+        // 2. 循环计算找到概率范围值
+        BigDecimal rateRange = BigDecimal.valueOf(convert(minAwardRate.doubleValue()));
 
         //4、生成策略奖品概率查找表，其实也就是分配占位，比如百分之80的可能，概率范围为百分位为100，那给他分配80个占位即可。
         List<Integer> strategyAwardSearchTables = new ArrayList<>(rateRange.intValue());

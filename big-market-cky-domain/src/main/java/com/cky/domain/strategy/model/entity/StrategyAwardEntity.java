@@ -28,5 +28,11 @@ public class StrategyAwardEntity {
     private Integer awardCountSurplus;
     /** 奖品中奖概率 */
     private BigDecimal awardRate;
+    /** 排序*/
+    private Integer sort;
+    /** 奖品标题*/
+    private String awardTitle;
+    /** 奖品副标题*/
+    private String awardSubtitle;
 
 }

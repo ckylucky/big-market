@@ -13,6 +13,7 @@
         <module>big-market-cky-trigger</module>
         <module>big-market-cky-infrastructure</module>
         <module>big-market-cky-types</module>
+        <module>big-market-cky-api</module>
     </modules>
 
     <repositories>

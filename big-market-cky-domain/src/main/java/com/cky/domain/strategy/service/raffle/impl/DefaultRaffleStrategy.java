@@ -1,22 +1,22 @@
-package com.cky.domain.strategy.service.raffle;
+package com.cky.domain.strategy.service.raffle.impl;
 
-import com.cky.domain.strategy.model.entity.RaffleAwardEntity;
 import com.cky.domain.strategy.model.entity.StrategyAwardEntity;
 import com.cky.domain.strategy.model.valobj.RuleTreeVO;
 import com.cky.domain.strategy.model.valobj.StrategyAwardRuleModelVO;
 import com.cky.domain.strategy.model.valobj.StrategyAwardStockKeyVO;
 import com.cky.domain.strategy.repository.IStrategyRepository;
-import com.cky.domain.strategy.service.AbstractRaffleStrategy;
 import com.cky.domain.strategy.service.armory.IStrategyDispatch;
+import com.cky.domain.strategy.service.raffle.AbstractRaffleStrategy;
+import com.cky.domain.strategy.service.raffle.IRaffleAward;
+import com.cky.domain.strategy.service.raffle.IRaffleStock;
 import com.cky.domain.strategy.service.rule.chain.ILogicChain;
 import com.cky.domain.strategy.service.rule.chain.factory.DefaultChainFactory;
-import com.cky.domain.strategy.service.rule.filter.factory.DefaultLogicFactory;
 import com.cky.domain.strategy.service.rule.tree.factory.DefaultTreeFactory;
 import com.cky.domain.strategy.service.rule.tree.factory.engine.IDecisionTreeEngine;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author Fuzhengwei bugstack.cn @小傅哥
@@ -25,7 +25,7 @@ import javax.annotation.Resource;
  */
 @Slf4j
 @Service
-public class DefaultRaffleStrategy extends AbstractRaffleStrategy {
+public class DefaultRaffleStrategy extends AbstractRaffleStrategy implements IRaffleStock, IRaffleAward {
 
 
     public DefaultRaffleStrategy(DefaultChainFactory defaultChainFactory, DefaultTreeFactory defaultTreeFactory, IStrategyRepository repository, IStrategyDispatch strategyDispatch) {
@@ -75,5 +75,11 @@ public class DefaultRaffleStrategy extends AbstractRaffleStrategy {
     @Override
     public void updateStrategyAwardStock(Long strategyId, Integer awardId) {
         repository.updateStrategyAwardStock(strategyId, awardId);
+    }
+
+    @Override
+    public List<StrategyAwardEntity> queryRaffleStrategyAwardList(Long strategyId) {
+        List<StrategyAwardEntity> strategyAwardEntities = repository.queryStrategyAwardList(strategyId);
+        return strategyAwardEntities;
     }
 }
