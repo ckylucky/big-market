@@ -2,4 +2,4 @@ spring:
   config:
     name: big-market-cky-app
   profiles:
-    active: prod
+    active: dev

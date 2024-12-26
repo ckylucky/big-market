@@ -39,7 +39,7 @@ public class ApiTest {
     @Test
     public void test1() {
 
-        List<strategyAward> strategyAwards =  strategyAwardDao.queryStrategyAwardListByStrategyId(10002L);
+        List<strategyAward> strategyAwards =  strategyAwardDao.queryStrategyAwardListByStrategyId(100002L);
         log.info("测试结果：{}", JSON.toJSONString(strategyAwards));
 
     }
