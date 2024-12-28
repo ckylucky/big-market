@@ -59,12 +59,8 @@ public class RaffleActivityOrderDaoTest {
         raffleActivityOrder.setOrderTime(new Date());
         raffleActivityOrder.setState("not_used");
         // 插入数据
-        int result = raffleActivityOrderDao.insert(raffleActivityOrder);
-        if (result > 0) {
-            System.out.println("Insert successful!");
-        } else {
-            System.out.println("Insert failed.");
-    }}
+        raffleActivityOrderDao.insert(raffleActivityOrder);
+    }
 
     @Test
     public void test_queryRaffleActivityOrderByUserId() {
