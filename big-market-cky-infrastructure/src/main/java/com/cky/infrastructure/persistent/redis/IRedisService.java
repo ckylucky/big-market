@@ -2,6 +2,8 @@ package com.cky.infrastructure.persistent.redis;
 
 import org.redisson.api.*;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * Redis 服务
  *
@@ -247,6 +249,9 @@ public interface IRedisService {
     <T> RBloomFilter<T> getBloomFilter(String key);
 
     Boolean setNx(String lockKey);
-
+    Boolean setNx(String key, long expired, TimeUnit timeUnit);
     void setAtomicLong(String cacheKey, int awardCount);
+    void setAtomicLong(String key, long value);
+
+    Long getAtomicLong(String cacheKey);
 }

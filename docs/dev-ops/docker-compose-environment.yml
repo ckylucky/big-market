@@ -32,7 +32,19 @@ services:
     container_name: mysql-job-dbdata
     volumes:
       - /var/lib/mysql
-
+  rabbitmq:
+    image: rabbitmq:3.12.9
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
+    command: rabbitmq-server
+    volumes:
+      - ./rabbitmq/enabled_plugins:/etc/rabbitmq/enabled_plugins
   # phpmyadmin https://hub.docker.com/_/phpmyadmin
   phpmyadmin:
     image: phpmyadmin:5.2.1

@@ -5,6 +5,9 @@ import com.cky.domain.activity.model.aggregate.CreateOrderAggregate;
 import com.cky.domain.activity.model.entity.ActivityCountEntity;
 import com.cky.domain.activity.model.entity.ActivityEntity;
 import com.cky.domain.activity.model.entity.ActivitySkuEntity;
+import com.cky.domain.activity.model.valobj.ActivitySkuStockKeyVO;
+
+import java.util.Date;
 
 /**
  * @author Fuzhengwei bugstack.cn @小傅哥
@@ -20,4 +23,18 @@ public interface IActivityRepository {
     ActivityCountEntity queryRaffleActivityCountByActivityCountId(Long activityCountId);
 
     void doSaveOrder(CreateOrderAggregate createOrderAggregate);
+
+    void cacheActivitySkuStockCount(String cacheKey, Integer stockCount);
+
+    boolean subtractionActivitySkuStock(Long sku, String cacheKey, Date endDateTime);
+
+    void activitySkuStockConsumeSendQueue(ActivitySkuStockKeyVO build);
+
+    ActivitySkuStockKeyVO takeQueueValue();
+
+    void clearQueueValue();
+
+    void updateActivitySkuStock(Long sku);
+
+    void clearActivitySkuStock(Long sku);
 }
