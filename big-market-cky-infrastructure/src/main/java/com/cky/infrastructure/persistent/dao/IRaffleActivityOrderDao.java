@@ -4,6 +4,7 @@ package com.cky.infrastructure.persistent.dao;
 import cn.bugstack.middleware.db.router.annotation.DBRouter;
 import cn.bugstack.middleware.db.router.annotation.DBRouterStrategy;
 import com.cky.infrastructure.persistent.po.RaffleActivityOrder;
+import com.cky.infrastructure.persistent.po.UserRaffleOrder;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

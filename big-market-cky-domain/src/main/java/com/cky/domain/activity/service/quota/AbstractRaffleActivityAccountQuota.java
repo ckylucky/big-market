@@ -1,12 +1,13 @@
-package com.cky.domain.activity.service;
+package com.cky.domain.activity.service.quota;
 
 
 import com.alibaba.fastjson.JSON;
-import com.cky.domain.activity.model.aggregate.CreateOrderAggregate;
+import com.cky.domain.activity.model.aggregate.CreateQuotaOrderAggregate;
 import com.cky.domain.activity.model.entity.*;
 import com.cky.domain.activity.repository.IActivityRepository;
-import com.cky.domain.activity.service.rule.IActionChain;
-import com.cky.domain.activity.service.rule.factory.DefaultActivityChainFactory;
+import com.cky.domain.activity.service.IRaffleActivityAccountQuotaService;
+import com.cky.domain.activity.service.quota.rule.IActionChain;
+import com.cky.domain.activity.service.quota.rule.factory.DefaultActivityChainFactory;
 import com.cky.types.enums.ResponseCode;
 import com.cky.types.exception.AppException;
 import lombok.extern.slf4j.Slf4j;
@@ -18,10 +19,10 @@ import org.apache.commons.lang3.StringUtils;
  * @create 2024-03-16 08:42
  */
 @Slf4j
-public abstract class AbstractRaffleActivity extends RaffleActivitySupport implements IRaffleOrder  {
+public abstract class AbstractRaffleActivityAccountQuota extends RaffleActivityAccountQuotaSupport implements IRaffleActivityAccountQuotaService {
 
 
-    public AbstractRaffleActivity(IActivityRepository activityRepository, DefaultActivityChainFactory defaultActivityChainFactory) {
+    public AbstractRaffleActivityAccountQuota(IActivityRepository activityRepository, DefaultActivityChainFactory defaultActivityChainFactory) {
         super(activityRepository, defaultActivityChainFactory);
     }
 
@@ -45,7 +46,7 @@ public abstract class AbstractRaffleActivity extends RaffleActivitySupport imple
         String userId = skuRechargeEntity.getUserId();
         String outBusinessNo = skuRechargeEntity.getOutBusinessNo();
         Long sku = skuRechargeEntity.getSku();
-        if(sku!=null&& StringUtils.isBlank(userId)&&StringUtils.isBlank(outBusinessNo)){
+        if(sku==null|| StringUtils.isBlank(userId)||StringUtils.isBlank(outBusinessNo)){
             throw new AppException(ResponseCode.ILLEGAL_PARAMETER.getCode(),ResponseCode.ILLEGAL_PARAMETER.getInfo());
         }
         //2、查询活动，次数实体
@@ -60,7 +61,7 @@ public abstract class AbstractRaffleActivity extends RaffleActivitySupport imple
         IActionChain actionChain = defaultActivityChainFactory.openActionChain();
         boolean success = actionChain.action(activitySkuEntity, activityEntity, activityCountEntity);
         //4、创建聚合对象
-        CreateOrderAggregate createOrderAggregate= buildOrderAggregate(skuRechargeEntity,activitySkuEntity,activityEntity,activityCountEntity);
+        CreateQuotaOrderAggregate createOrderAggregate= buildOrderAggregate(skuRechargeEntity,activitySkuEntity,activityEntity,activityCountEntity);
         //5、保存订单
         doSaveOrder(createOrderAggregate);
 
@@ -70,6 +71,6 @@ public abstract class AbstractRaffleActivity extends RaffleActivitySupport imple
     }
     //创建聚合对象 因为这里保存订单的时候有两个操作，一个时更新活动账户或者insert 一个是创建订单，所以这里聚合对象是两个实体的聚合
     //一个是活动账户实体 一个是订单实体  活动账户实体我们并不需要那么多字段
-    protected abstract CreateOrderAggregate buildOrderAggregate(SkuRechargeEntity skuRechargeEntity,ActivitySkuEntity activitySkuEntity, ActivityEntity activityEntity, ActivityCountEntity activityCountEntity) ;
+    protected abstract CreateQuotaOrderAggregate buildOrderAggregate(SkuRechargeEntity skuRechargeEntity, ActivitySkuEntity activitySkuEntity, ActivityEntity activityEntity, ActivityCountEntity activityCountEntity) ;
 
 }

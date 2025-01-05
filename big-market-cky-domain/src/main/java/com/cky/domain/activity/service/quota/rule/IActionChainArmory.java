@@ -1,4 +1,4 @@
-package com.cky.domain.activity.service.rule;
+package com.cky.domain.activity.service.quota.rule;
 
 /**
  * @description

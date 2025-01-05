@@ -1,4 +1,4 @@
-package com.cky.domain.activity.service.rule.impl;
+package com.cky.domain.activity.service.quota.rule.impl;
 
 
 import com.cky.domain.activity.model.entity.ActivityCountEntity;
@@ -7,7 +7,7 @@ import com.cky.domain.activity.model.entity.ActivitySkuEntity;
 import com.cky.domain.activity.model.valobj.ActivitySkuStockKeyVO;
 import com.cky.domain.activity.repository.IActivityRepository;
 import com.cky.domain.activity.service.armory.IActivityDispatch;
-import com.cky.domain.activity.service.rule.AbstractActionChain;
+import com.cky.domain.activity.service.quota.rule.AbstractActionChain;
 import com.cky.types.enums.ResponseCode;
 import com.cky.types.exception.AppException;
 import lombok.extern.slf4j.Slf4j;

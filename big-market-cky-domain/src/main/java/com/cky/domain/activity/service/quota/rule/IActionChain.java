@@ -1,4 +1,4 @@
-package com.cky.domain.activity.service.rule;
+package com.cky.domain.activity.service.quota.rule;
 
 import com.cky.domain.activity.model.entity.ActivityCountEntity;
 import com.cky.domain.activity.model.entity.ActivityEntity;
