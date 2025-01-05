@@ -28,5 +28,14 @@ public class EventPublisher {
             throw e;
         }
     }
+    public void publish(String topic,String eventMessage) {
+        try {
+            rabbitTemplate.convertAndSend(topic, eventMessage);
+            log.info("发送MQ消息 topic:{} message:{}", topic, eventMessage);
+        } catch (Exception e) {
+            log.error("发送MQ消息失败 topic:{} message:{}", topic, JSON.toJSONString(eventMessage), e);
+            throw e;
+        }
+    }
 
 }
