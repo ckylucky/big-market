@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @ClassName ActivityArmory
@@ -31,6 +32,20 @@ public class ActivityArmory implements IActivityArmory, IActivityDispatch {
         //预热活动次数【查询时预热到缓存】
         repository.queryRaffleActivityCountByActivityCountId(activitySkuEntity.getActivityCountId());
         return true;
+    }
+
+    @Override
+    public void assembleActivitySkuByActivityId(Long activityId) {
+        List<ActivitySkuEntity> activitySkuEntities =repository.queryActivitySkuListByActivityId(activityId);
+        for (ActivitySkuEntity activitySkuEntity:activitySkuEntities){
+            cacheActivitySkuStockCount(activitySkuEntity.getSku(),activitySkuEntity.getStockCount());
+            //预热sku活动库存
+            cacheActivitySkuStockCount(activitySkuEntity.getSku(), activitySkuEntity.getStockCountSurplus());
+            //预热sku对应的活动次数【查询时预热到缓存】
+            repository.queryRaffleActivityCountByActivityCountId(activitySkuEntity.getActivityCountId());
+        }
+        //缓存活动  查询活动时会加到缓存里
+        repository.queryRaffleActivityByActivityId(activityId);
     }
 
     private void cacheActivitySkuStockCount(Long sku, Integer stockCount) {

@@ -9,8 +9,10 @@ import com.cky.domain.award.repository.IAwardRepository;
 import com.cky.infrastructure.event.EventPublisher;
 import com.cky.infrastructure.persistent.dao.ITaskDao;
 import com.cky.infrastructure.persistent.dao.IUserAwardRecordDao;
+import com.cky.infrastructure.persistent.dao.IUserRaffleOrderDao;
 import com.cky.infrastructure.persistent.po.Task;
 import com.cky.infrastructure.persistent.po.UserAwardRecord;
+import com.cky.infrastructure.persistent.po.UserRaffleOrder;
 import com.cky.types.enums.ResponseCode;
 import com.cky.types.exception.AppException;
 import lombok.extern.slf4j.Slf4j;
@@ -41,6 +43,8 @@ public class AwardRepository implements IAwardRepository {
     @Resource
     private EventPublisher eventPublisher;
 
+    @Resource
+    private IUserRaffleOrderDao userRaffleOrderDao;
     @Override
     public void saveUserAwardRecord(UserAwardRecordAggregate userAwardRecordAggregate) {
         UserAwardRecordEntity userAwardRecordEntity = userAwardRecordAggregate.getUserAwardRecordEntity();
@@ -66,7 +70,9 @@ public class AwardRepository implements IAwardRepository {
         task.setMessageId(taskEntity.getMessageId());
         task.setMessage(JSON.toJSONString(taskEntity.getMessage()));
         task.setState(taskEntity.getState().getCode());
-
+        UserRaffleOrder userRaffleOrderReq = new UserRaffleOrder();
+        userRaffleOrderReq.setUserId(userAwardRecordEntity.getUserId());
+        userRaffleOrderReq.setOrderId(userAwardRecordEntity.getOrderId());
 
         try {
             dbRouter.doRouter(userId);
@@ -74,12 +80,18 @@ public class AwardRepository implements IAwardRepository {
                 try {
                     userAwardRecordDao.insert(userAwardRecord);
                     taskDao.insert(task);
-                    return 1;//todo
+                    // 更新抽奖单
+                    int count = userRaffleOrderDao.updateUserRaffleOrderStateUsed(userRaffleOrderReq);
+                    if (1 != count) {
+                        status.setRollbackOnly();
+                        log.error("写入中奖记录，用户抽奖单已使用过，不可重复抽奖 userId: {} activityId: {} awardId: {}", userId, activityId, awardId);
+                        throw new AppException(ResponseCode.ACTIVITY_ORDER_ERROR.getCode(), ResponseCode.ACTIVITY_ORDER_ERROR.getInfo());
+                    }
+                    return 1;
                 }
                 catch (DuplicateKeyException e){
                     status.setRollbackOnly();
                     log.error("写入中奖记录，唯一索引冲突 userId: {} activityId: {} awardId: {}", userId, activityId, awardId, e);throw new AppException(ResponseCode.INDEX_DUP.getCode(), e);
-
                 }
             });}
             finally {

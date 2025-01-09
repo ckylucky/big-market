@@ -1,6 +1,9 @@
 package com.cky.domain.activity.model.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @ClassName PartakeRaffleActivityEntity
@@ -9,6 +12,9 @@ import lombok.Data;
  * @Date 2025/1/3 20:16
  * @Version 1.0
  */
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class PartakeRaffleActivityEntity {
     /**

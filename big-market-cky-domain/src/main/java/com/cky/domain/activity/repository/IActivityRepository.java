@@ -5,8 +5,10 @@ import com.cky.domain.activity.model.aggregate.CreatePartakeOrderAggregate;
 import com.cky.domain.activity.model.aggregate.CreateQuotaOrderAggregate;
 import com.cky.domain.activity.model.entity.*;
 import com.cky.domain.activity.model.valobj.ActivitySkuStockKeyVO;
+import com.cky.domain.strategy.model.entity.StrategyEntity;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Fuzhengwei bugstack.cn @小傅哥
@@ -46,4 +48,8 @@ public interface IActivityRepository {
     UserRaffleOrderEntity queryNoUsedRaffleOrder(PartakeRaffleActivityEntity partakeRaffleActivityEntity);
 
     void saveCreatePartakeOrderAggregate(CreatePartakeOrderAggregate createPartakeOrderAggregate);
+
+    List<ActivitySkuEntity> queryActivitySkuListByActivityId(Long activityId);
+
+
 }

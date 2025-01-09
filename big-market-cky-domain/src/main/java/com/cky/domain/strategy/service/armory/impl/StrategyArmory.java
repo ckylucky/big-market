@@ -1,5 +1,7 @@
 package com.cky.domain.strategy.service.armory.impl;
 
+import com.cky.domain.activity.model.entity.ActivityEntity;
+import com.cky.domain.activity.repository.IActivityRepository;
 import com.cky.domain.strategy.model.entity.StrategyAwardEntity;
 import com.cky.domain.strategy.model.entity.StrategyEntity;
 import com.cky.domain.strategy.model.entity.StrategyRuleEntity;
@@ -29,6 +31,10 @@ public class StrategyArmory implements IStrategyArmory, IStrategyDispatch {
 
     @Resource
     private IStrategyRepository repository;
+
+
+    @Resource
+    private IActivityRepository activityRepository;
     /**
      *   根据抽奖策略id 装配其奖品对应的key 后续我们可以根据该数值来抽取对应的奖品  一般在活动确定好就初始化到redis中了
      * @param strategyId  抽奖策略id
@@ -79,6 +85,17 @@ public class StrategyArmory implements IStrategyArmory, IStrategyDispatch {
             assembleLotteryStrategy(String.valueOf(strategyId).concat("_").concat(key), strategyAwardEntitiesClone);
         }
         return true;
+    }
+
+    /**
+     * 通过活动id来装配 对应的策略
+     * @param activityId
+     */
+    @Override
+    public boolean assembleLotteryStrategyByActivityId(Long activityId) {
+        ActivityEntity activityEntity =activityRepository.queryRaffleActivityByActivityId(activityId);
+        Long strategyId = activityEntity.getStrategyId();
+        return assembleLotteryStrategy(strategyId);
     }
 
     private void cacheStrategyAwardCount(Long strategyId, Integer awardId, Integer awardCount) {

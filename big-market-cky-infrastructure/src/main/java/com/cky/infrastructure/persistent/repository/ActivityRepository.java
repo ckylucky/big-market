@@ -9,6 +9,7 @@ import com.cky.domain.activity.model.valobj.ActivitySkuStockKeyVO;
 import com.cky.domain.activity.model.valobj.ActivityStateVO;
 import com.cky.domain.activity.model.valobj.UserRaffleOrderStateVO;
 import com.cky.domain.activity.repository.IActivityRepository;
+import com.cky.domain.strategy.model.entity.StrategyEntity;
 import com.cky.infrastructure.event.EventPublisher;
 import com.cky.infrastructure.persistent.dao.*;
 
@@ -25,7 +26,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -457,5 +461,22 @@ public class ActivityRepository implements IActivityRepository {
             dbRouter.clear();
         }
     }
+
+    @Override
+    public List<ActivitySkuEntity> queryActivitySkuListByActivityId(Long activityId) {
+        List<RaffleActivitySku> raffleActivitySkus = raffleActivitySkuDao.queryActivitySkuListByActivityId(activityId);
+        List<ActivitySkuEntity> activitySkuEntities = new ArrayList<>(raffleActivitySkus.size());
+        for (RaffleActivitySku raffleActivitySku:raffleActivitySkus){
+            ActivitySkuEntity activitySkuEntity = new ActivitySkuEntity();
+            activitySkuEntity.setSku(raffleActivitySku.getSku());
+            activitySkuEntity.setActivityCountId(raffleActivitySku.getActivityCountId());
+            activitySkuEntity.setStockCount(raffleActivitySku.getStockCount());
+            activitySkuEntity.setStockCountSurplus(raffleActivitySku.getStockCountSurplus());
+            activitySkuEntities.add(activitySkuEntity);
+        }
+        return activitySkuEntities;
+    }
+
+
 
 }

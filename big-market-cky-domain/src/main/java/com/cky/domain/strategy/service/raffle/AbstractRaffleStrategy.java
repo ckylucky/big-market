@@ -65,6 +65,7 @@ public abstract class AbstractRaffleStrategy implements IRaffleStrategy {
                 .awardId(awardId)
                 .awardConfig(awardConfig)
                 .sort(strategyAward.getSort())
+                .awardTitle(strategyAward.getAwardTitle())
                 .build();
     }
     protected abstract DefaultTreeFactory.StrategyAwardData raffleLogicTree(String userId, Long strategyId, Integer awardId) ;
