@@ -1,11 +1,13 @@
 package com.cky.trigger.http;
 
 import com.alibaba.fastjson.JSON;
+import com.cky.domain.activity.service.IRaffleActivityAccountQuotaService;
 import com.cky.domain.strategy.model.entity.RaffleAwardEntity;
 import com.cky.domain.strategy.model.entity.RaffleFactorEntity;
 import com.cky.domain.strategy.model.entity.StrategyAwardEntity;
 import com.cky.domain.strategy.service.armory.IStrategyArmory;
 import com.cky.domain.strategy.service.raffle.IRaffleAward;
+import com.cky.domain.strategy.service.raffle.IRaffleRules;
 import com.cky.domain.strategy.service.raffle.IRaffleStrategy;
 
 import com.cky.tigger.api.IRaffleStrategyService;
@@ -17,11 +19,13 @@ import com.cky.types.enums.ResponseCode;
 import com.cky.types.exception.AppException;
 import com.cky.types.model.Response;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName RaffleController
@@ -45,6 +49,11 @@ public class RaffleStrategyController implements IRaffleStrategyService {
 
     @Resource
     private IRaffleStrategy raffleStrategy;
+
+    @Resource
+    private IRaffleRules raffleRules;
+    @Resource
+    private IRaffleActivityAccountQuotaService raffleActivityAccountQuotaService;
 
 
     /**
@@ -89,6 +98,7 @@ public class RaffleStrategyController implements IRaffleStrategyService {
      * 请求参数 raw json
      *
      * @param raffleAwardListRequestDTO {"strategyId":1000001}
+     * @param raffleAwardListRequestDTO {"activityId":100301,"userId":"xiaofuge"}
      * @return 奖品列表
      */
     @RequestMapping(value = "query_raffle_award_list", method = RequestMethod.POST)
@@ -97,14 +107,35 @@ public class RaffleStrategyController implements IRaffleStrategyService {
         try {
 
             log.info("查询抽奖奖品列表配开始 strategyId：{}", raffleAwardListRequestDTO.getStrategyId());
-            List<StrategyAwardEntity> strategyAwardEntities = raffleAward.queryRaffleStrategyAwardList(raffleAwardListRequestDTO.getStrategyId());
+            //1、参数校验
+            Long activityId = raffleAwardListRequestDTO.getActivityId();
+            String userId = raffleAwardListRequestDTO.getUserId();
+            if(StringUtils.isBlank(userId)||activityId==null){
+                throw new AppException(ResponseCode.ILLEGAL_PARAMETER.getCode(), ResponseCode.ILLEGAL_PARAMETER.getInfo());
+            }
+            //2、获取策略奖品配置 通过活动id来获得 一个活动对应一个策略 (这里要加上rule_models)
+            List<StrategyAwardEntity> strategyAwardEntities = raffleAward.queryRaffleStrategyAwardListByActivityId(raffleAwardListRequestDTO.getActivityId());
+
+            // 3. 获取规则配置
+            String[] treeIds = strategyAwardEntities.stream().map(StrategyAwardEntity::getRuleModels)
+                    .filter(ruleModel -> ruleModel != null && !ruleModel.isEmpty())
+                    .toArray(String[]::new);
+            // 4. 查询规则配置 - 获取奖品的解锁限制，抽奖N次后解锁
+            Map<String, Integer> ruleLockCountMap = raffleRules.queryAwardRuleLockCount(treeIds);
+            // 5. 查询抽奖次数 - 用户已经参与的抽奖次数
+            Integer dayPartakeCount = raffleActivityAccountQuotaService.queryRaffleActivityAccountDayPartakeCount(raffleAwardListRequestDTO.getActivityId(), raffleAwardListRequestDTO.getUserId());
+
             List<RaffleAwardListResponseDTO> raffleAwardListResponseDTOS = new ArrayList<>(strategyAwardEntities.size());
             for (StrategyAwardEntity strategyAward : strategyAwardEntities) {
+                Integer awardRuleLockCount = ruleLockCountMap.get(strategyAward.getRuleModels());
                 RaffleAwardListResponseDTO raffleAwardListResponseDTO = RaffleAwardListResponseDTO.builder()
                         .awardId(strategyAward.getAwardId())
                         .awardTitle(strategyAward.getAwardTitle())
                         .awardSubtitle(strategyAward.getAwardSubtitle())
                         .sort(strategyAward.getSort())
+                        .LockCount(awardRuleLockCount)
+                        .isAwardUnlock(null == awardRuleLockCount || dayPartakeCount >= awardRuleLockCount)
+                        .waitUnLockCount(null == awardRuleLockCount || awardRuleLockCount <= dayPartakeCount ? 0 : awardRuleLockCount - dayPartakeCount)
                         .build();
 
                 raffleAwardListResponseDTOS.add(raffleAwardListResponseDTO);

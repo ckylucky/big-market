@@ -10,6 +10,7 @@ import com.cky.domain.strategy.service.rule.tree.factory.DefaultTreeFactory;
 import com.cky.domain.strategy.service.rule.tree.factory.engine.IDecisionTreeEngine;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -31,36 +32,34 @@ public class DecisionTreeEngine implements IDecisionTreeEngine {
     }
 
     @Override
-    public DefaultTreeFactory.StrategyAwardData process(String userId, Long strategyId, Integer awardId) {
+    public DefaultTreeFactory.StrategyAwardData process(String userId, Long strategyId, Integer awardId, Date endDateTime) {
         DefaultTreeFactory.StrategyAwardData strategyAwardData = null;
 
         // 获取基础信息
-        String nextNode = ruleTreeVO.getTreeRootRuleNode();//根节点
-        Map<String, RuleTreeNodeVO> treeNodeMap = ruleTreeVO.getTreeNodeMap();//规则树的map
+        String nextNode = ruleTreeVO.getTreeRootRuleNode();
+        Map<String, RuleTreeNodeVO> treeNodeMap = ruleTreeVO.getTreeNodeMap();
+
         // 获取起始节点「根节点记录了第一个要执行的规则」
         RuleTreeNodeVO ruleTreeNode = treeNodeMap.get(nextNode);
-        //获得每个节点的 rule_value值，以便后续具体的实现去根据其来操作
-        String ruleValue = ruleTreeNode.getRuleValue();
         while (null != nextNode) {
-            // 获取对应的决策节点  根据树节点的规则key  通过我们的map获得决策的具体实现类
+            // 获取决策节点
             ILogicTreeNode logicTreeNode = logicTreeNodeGroup.get(ruleTreeNode.getRuleKey());
+            String ruleValue = ruleTreeNode.getRuleValue();
 
-            // 决策节点计算  得到信息 包括放行或者接管 以及对应的抽奖奖品id和规则
-            DefaultTreeFactory.TreeActionEntity logicEntity = logicTreeNode.logic(userId, strategyId, awardId,ruleValue);
+            // 决策节点计算
+            DefaultTreeFactory.TreeActionEntity logicEntity = logicTreeNode.logic(userId, strategyId, awardId, ruleValue, endDateTime);
             RuleLogicCheckTypeVO ruleLogicCheckTypeVO = logicEntity.getRuleLogicCheckType();
             strategyAwardData = logicEntity.getStrategyAwardData();
             log.info("决策树引擎【{}】treeId:{} node:{} code:{}", ruleTreeVO.getTreeName(), ruleTreeVO.getTreeId(), nextNode, ruleLogicCheckTypeVO.getCode());
 
-            // 获取下个节点  通过当前节点的接管以及放行状态 获取当前节点连线对应的节点
-            //比如 lock 如果是ALLOW 则会找到 stock 反之会找到luck_award
+            // 获取下个节点
             nextNode = nextNode(ruleLogicCheckTypeVO.getCode(), ruleTreeNode.getTreeNodeLineVOList());
-            ruleTreeNode = treeNodeMap.get(nextNode); //根据下一个节点的名字 得到其  todo 与nextNode区别 nextnode只是一个string的key 通过key找到具体的树节点
+            ruleTreeNode = treeNodeMap.get(nextNode);
         }
 
         // 返回最终结果
         return strategyAwardData;
     }
-
     public String nextNode(String matterValue, List<RuleTreeNodeLineVO> treeNodeLineVOList) {
         if (null == treeNodeLineVOList || treeNodeLineVOList.isEmpty()) return null;
         for (RuleTreeNodeLineVO nodeLine : treeNodeLineVOList) {

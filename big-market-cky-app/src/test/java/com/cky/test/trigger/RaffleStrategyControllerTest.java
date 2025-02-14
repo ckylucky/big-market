@@ -1,0 +1,42 @@
+package com.cky.test.trigger;
+
+
+import com.alibaba.fastjson.JSON;
+import com.cky.tigger.api.IRaffleStrategyService;
+import com.cky.tigger.api.dao.RaffleAwardListRequestDTO;
+import com.cky.tigger.api.dao.RaffleAwardListResponseDTO;
+import com.cky.types.model.Response;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+/**
+ * @author Fuzhengwei bugstack.cn @小傅哥
+ * @description 营销抽奖服务测试
+ * @create 2024-04-20 10:41
+ */
+@Slf4j
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class RaffleStrategyControllerTest {
+
+    @Resource
+    private IRaffleStrategyService raffleStrategyService;
+
+    @Test
+    public void test_queryRaffleAwardList() {
+        RaffleAwardListRequestDTO request = new RaffleAwardListRequestDTO();
+        request.setUserId("cky");
+        request.setActivityId(100301L);
+        Response<List<RaffleAwardListResponseDTO>> response = raffleStrategyService.qureyRaffleAwardList(request);
+
+        log.info("请求参数：{}", JSON.toJSONString(request));
+        log.info("测试结果：{}", JSON.toJSONString(response));
+    }
+
+}

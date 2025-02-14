@@ -143,9 +143,6 @@ public class ActivityRepository implements IActivityRepository {
             raffleActivityOrder.setTotalCount(activityOrderEntity.getTotalCount());
             raffleActivityOrder.setDayCount(activityOrderEntity.getDayCount());
             raffleActivityOrder.setMonthCount(activityOrderEntity.getMonthCount());
-            raffleActivityOrder.setTotalCount(createOrderAggregate.getTotalCount());
-            raffleActivityOrder.setDayCount(createOrderAggregate.getDayCount());
-            raffleActivityOrder.setMonthCount(createOrderAggregate.getMonthCount());
             raffleActivityOrder.setState(activityOrderEntity.getState().getCode());
             raffleActivityOrder.setOutBusinessNo(activityOrderEntity.getOutBusinessNo());
 
@@ -399,7 +396,8 @@ public class ActivityRepository implements IActivityRepository {
                                 .userId(activityAccountMonthEntity.getUserId())
                                 .activityId(activityAccountMonthEntity.getActivityId())
                                 .month(activityAccountMonthEntity.getMonth())
-                                .monthCount(activityAccountMonthEntity.getMonthCount())
+                                        .monthCount(activityAccountMonthEntity.getMonthCountSurplus())
+                               // .monthCount(activityAccountMonthEntity.getMonthCount())
                                 .monthCountSurplus(activityAccountMonthEntity.getMonthCountSurplus() - 1)
                                 .build());
 //                        // 新创建月账户，则更新总账表中月镜像额度
@@ -428,7 +426,8 @@ public class ActivityRepository implements IActivityRepository {
                                 .userId(activityAccountDayEntity.getUserId())
                                 .activityId(activityAccountDayEntity.getActivityId())
                                 .day(activityAccountDayEntity.getDay())
-                                .dayCount(activityAccountDayEntity.getDayCount())
+                                //这里用 剩余量
+                                .dayCount(activityAccountDayEntity.getDayCountSurplus())
                                 .dayCountSurplus(activityAccountDayEntity.getDayCountSurplus() - 1)
                                 .build());
 //                        // 新创建日账户，则更新总账表中日镜像额度
@@ -477,6 +476,16 @@ public class ActivityRepository implements IActivityRepository {
         return activitySkuEntities;
     }
 
+    @Override
+    public Integer queryRaffleActivityAccountDayPartakeCount(Long activityId, String userId) {
+        RaffleActivityAccountDay raffleActivityAccountDay=new RaffleActivityAccountDay();
+        raffleActivityAccountDay.setDay(raffleActivityAccountDay.currentDay());
+        raffleActivityAccountDay.setActivityId(activityId);
+        raffleActivityAccountDay.setUserId(userId);
+        Integer dayPartakeCount = raffleActivityAccountDayDao.queryRaffleActivityAccountDayPartakeCount(raffleActivityAccountDay);
+        // 当日未参与抽奖则为0次
+        return null == dayPartakeCount ? 0 : dayPartakeCount;
+    }
 
 
 }

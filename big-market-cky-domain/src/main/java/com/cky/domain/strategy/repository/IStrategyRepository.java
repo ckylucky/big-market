@@ -7,8 +7,10 @@ import com.cky.domain.strategy.model.valobj.RuleTreeVO;
 import com.cky.domain.strategy.model.valobj.StrategyAwardRuleModelVO;
 import com.cky.domain.strategy.model.valobj.StrategyAwardStockKeyVO;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName IStrategyRepository
@@ -38,7 +40,7 @@ public interface IStrategyRepository {
 
     RuleTreeVO queryRuleTreeVOByTreeId(String ruleModels);
 
-    Boolean subtractionAwardStock(String cacheKey);
+    Boolean subtractionAwardStock(String cacheKey, Date endDateTime);
 
     void awardStockConsumeSendQueue(StrategyAwardStockKeyVO build);
 
@@ -52,4 +54,8 @@ public interface IStrategyRepository {
     StrategyAwardEntity queryStrategyAwardEntity(Long strategyId, Integer awardId);
 
     Integer queryTodayUserRaffleCount(String userId, Long strategyId);
+
+    Long queryStrategyIdByActivityId(Long activityId);
+
+    Map<String, Integer> queryAwardRuleLockCount(String[] treeIds);
 }
