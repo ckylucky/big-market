@@ -26,4 +26,6 @@ public interface IRaffleActivityService {
      * @return 返回结果
      */
     Response<ActivityDrawResponseDTO> draw(ActivityDrawRequestDTO request);
+
+    Response<Boolean> signRebate(String userid);
 }
