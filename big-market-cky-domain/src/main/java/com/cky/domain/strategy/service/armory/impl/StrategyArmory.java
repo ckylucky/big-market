@@ -65,6 +65,7 @@ public class StrategyArmory implements IStrategyArmory, IStrategyDispatch {
         assembleLotteryStrategy(strategyId.toString(),strategyAwardEntities);
         //2 通过策略id查找策略实体 接着判断它的rule_model是否还有rule_weight
         StrategyEntity strategyEntity =repository.queryStrategyEntityByStrategyId(strategyId);
+        //分割值 看是否有规则权重的配置
         String ruleWeight = strategyEntity.getRuleWeight();
         if(ruleWeight==null)
             return true;//当前策略没有配置rule_weight
@@ -122,6 +123,8 @@ public class StrategyArmory implements IStrategyArmory, IStrategyDispatch {
         }
         return max;
     }
+
+
     public boolean assembleLotteryStrategy(String key, List<StrategyAwardEntity> strategyAwardEntities) {
 
 

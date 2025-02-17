@@ -11,12 +11,12 @@ import java.util.Map;
 
 /**
  * @author Fuzhengwei bugstack.cn @小傅哥
- * @description 工厂
+ * @description 责任链工厂
  * @create 2024-01-20 10:54
  */
 @Service
 public class DefaultChainFactory {
-
+    //会自动注入  String 是bean的名字  ILogicChain是bean对象
     private final Map<String, ILogicChain> logicChainGroup;
     protected IStrategyRepository repository;
 
@@ -32,7 +32,9 @@ public class DefaultChainFactory {
      * @return LogicChain
      */
     public ILogicChain openLogicChain(Long strategyId) {
+        //1、先查询策略实体
         StrategyEntity strategy = repository.queryStrategyEntityByStrategyId(strategyId);
+        //根据策略实体 找其对应的规则模型
         String[] ruleModels = strategy.ruleModels();
 
         // 如果未配置策略规则，则只装填一个默认责任链

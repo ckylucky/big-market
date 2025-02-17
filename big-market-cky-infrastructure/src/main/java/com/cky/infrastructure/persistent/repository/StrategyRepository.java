@@ -113,7 +113,7 @@ public class StrategyRepository implements IStrategyRepository {
         if (!redisService.isExists(cacheKey)) {
             throw new AppException(UN_ASSEMBLED_STRATEGY_ARMORY.getCode(), cacheKey + Constants.COLON + UN_ASSEMBLED_STRATEGY_ARMORY.getInfo());
         }
-        return redisService.getValue(Constants.RedisKey.STRATEGY_RATE_RANGE_KEY + key);
+        return redisService.getValue(cacheKey);
     }
 
     @Override

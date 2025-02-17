@@ -3,6 +3,7 @@ package com.cky.domain.rebate.repository;
 
 
 import com.cky.domain.rebate.model.aggregate.BehaviorRebateAggregate;
+import com.cky.domain.rebate.model.entity.BehaviorRebateOrderEntity;
 import com.cky.domain.rebate.model.valobj.BehaviorTypeVO;
 import com.cky.domain.rebate.model.valobj.DailyBehaviorRebateVO;
 
@@ -19,4 +20,5 @@ public interface IBehaviorRebateRepository {
 
     void saveUserRebateRecord(String userId, List<BehaviorRebateAggregate> behaviorRebateAggregates);
 
+    List<BehaviorRebateOrderEntity> queryOrderByOutBusinessNo(String userId, String outBusinessNo);
 }

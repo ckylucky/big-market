@@ -76,4 +76,9 @@ public class RaffleActivityAccountQuotaService extends AbstractRaffleActivityAcc
     public void clearActivitySkuStock(Long sku) {
         activityRepository.clearActivitySkuStock(sku);
     }
+
+    @Override
+    public ActivityAccountEntity queryRaffleActivityAccountEntity(String userId, Long activityId) {
+        return activityRepository.queryRaffleActivityAccountEntity(userId,activityId);
+    }
 }

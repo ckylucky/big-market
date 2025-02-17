@@ -1,6 +1,7 @@
 package com.cky.domain.activity.service;
 
 
+import com.cky.domain.activity.model.entity.ActivityAccountEntity;
 import com.cky.domain.activity.model.entity.ActivityOrderEntity;
 import com.cky.domain.activity.model.entity.ActivityShopCartEntity;
 import com.cky.domain.activity.model.entity.SkuRechargeEntity;
@@ -31,4 +32,8 @@ public interface IRaffleActivityAccountQuotaService {
     String createSkuRechargeOrder(SkuRechargeEntity skuRechargeEntity);
 
     Integer queryRaffleActivityAccountDayPartakeCount(Long activityId, String userId);
+
+
+    ActivityAccountEntity queryRaffleActivityAccountEntity(String userId, Long activityId);
+
 }
