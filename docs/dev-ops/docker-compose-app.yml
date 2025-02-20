@@ -2,7 +2,7 @@ version: '3.8'
 # 命令执行 docker-compose -f docker-compose-app.yml up -d
 services:
   big-market-app:
-    image: cky/big-market-cky-app:1.0
+    image: cky/big-market-cky-app:2.0
     container_name: big-market-app
     restart: always
     ports:
@@ -37,7 +37,7 @@ services:
     ports:
       - 3000:3000
     environment:
-      - API_HOST_URL=http:/192.168.31.71:8091
+      - API_HOST_URL=http:/124.220.83.101:8091
       - PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
     healthcheck:
       test: [ "CMD", "wget", "--spider", "-q", "http://0.0.0.0:3000/" ]
