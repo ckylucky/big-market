@@ -34,7 +34,7 @@ public class BehaviorRebateService implements IBehaviorRebateService{
     private SendRebateMessageEvent sendRebateMessageEvent;
 
     @Override
-    public List<String> createOrder(BehaviorEntity behaviorEntity) {
+    public List<String>createOrder(BehaviorEntity behaviorEntity) {
         //1、查询返利配置
         List<DailyBehaviorRebateVO> dailyBehaviorRebateVOS = behaviorRebateRepository.queryDailyBehaviorRebateConfig(behaviorEntity.getBehaviorTypeVO());
 

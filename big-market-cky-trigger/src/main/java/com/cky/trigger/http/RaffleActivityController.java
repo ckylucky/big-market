@@ -193,13 +193,13 @@ public class RaffleActivityController implements IRaffleActivityService {
      */
     @RequestMapping(value = "calendar_sign_rebate", method = RequestMethod.POST)
     @Override
-    public Response<Boolean> signRebate(@RequestParam String userId) {
+    public Response<Boolean> calendarSignRebate(@RequestParam String userId) {
         try {
             log.info("日历签到返利开始 userId:{}", userId);
             BehaviorEntity behaviorEntity = new BehaviorEntity();
             behaviorEntity.setUserId(userId);
             behaviorEntity.setBehaviorTypeVO(BehaviorTypeVO.SIGN);
-            behaviorEntity.setOutBusinessNo(dateFormatDay.format(new Date())+2);
+            behaviorEntity.setOutBusinessNo(dateFormatDay.format(new Date()));
             List<String> orderIds = behaviorRebateService.createOrder(behaviorEntity);
             log.info("日历签到返利完成 userId:{} orderIds: {}", userId, JSON.toJSONString(orderIds));
             return Response.<Boolean>builder()
@@ -251,7 +251,7 @@ public class RaffleActivityController implements IRaffleActivityService {
                     .build();
         }
     }
-
+    @RequestMapping(value = "query_user_activity_account", method = RequestMethod.POST)
     @Override
     public Response<UserActivityAccountResponseDTO> queryUserActivityAccount(UserActivityAccountRequestDTO request) {
 

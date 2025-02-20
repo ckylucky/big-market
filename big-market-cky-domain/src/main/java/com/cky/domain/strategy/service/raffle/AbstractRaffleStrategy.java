@@ -55,6 +55,7 @@ public abstract class AbstractRaffleStrategy implements IRaffleStrategy {
         }
         //是默认抽奖 走后续流程 判断lock 库存 兜底奖励
         DefaultTreeFactory.StrategyAwardData treeStrategyAwardVO = raffleLogicTree(userId, strategyId, chainStrategyAwardVO.getAwardId(),raffleFactorEntity.getEndDateTime());
+
         log.info("抽奖策略计算-规则树 {} {} {} {}", userId, strategyId, treeStrategyAwardVO.getAwardId(), treeStrategyAwardVO.getAwardRuleValue());
 
         // 4. 返回抽奖结果

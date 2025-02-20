@@ -49,8 +49,9 @@ import java.util.*;
         return next().logic(userId, strategyId);}
 
 
+       //  TODO  这里应该是计算用户的积分表 这里先用抽奖次数代替
+        Integer userScore = repository.queryActivityAccountTotalUseCount(userId, strategyId);
         // 2. 转换Keys值，并默认排序
-
         List<Long> analyticalSortedKeys = new ArrayList<>(analyticalValueGroup.keySet());
         Collections.sort(analyticalSortedKeys); // 从小到大排序
 

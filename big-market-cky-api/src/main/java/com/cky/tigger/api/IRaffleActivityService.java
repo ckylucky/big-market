@@ -29,7 +29,7 @@ public interface IRaffleActivityService {
      */
     Response<ActivityDrawResponseDTO> draw(ActivityDrawRequestDTO request);
 
-    Response<Boolean> signRebate(String userid);
+    Response<Boolean> calendarSignRebate(String userid);
 
     /**
      * 判断是否完成日历签到返利接口

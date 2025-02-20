@@ -2,6 +2,7 @@ package com.cky.domain.strategy.service.raffle.impl;
 
 import com.cky.domain.strategy.model.entity.StrategyAwardEntity;
 import com.cky.domain.strategy.model.valobj.RuleTreeVO;
+import com.cky.domain.strategy.model.valobj.RuleWeightVO;
 import com.cky.domain.strategy.model.valobj.StrategyAwardRuleModelVO;
 import com.cky.domain.strategy.model.valobj.StrategyAwardStockKeyVO;
 import com.cky.domain.strategy.repository.IStrategyRepository;
@@ -53,6 +54,8 @@ public class DefaultRaffleStrategy extends AbstractRaffleStrategy implements IRa
         if (null == strategyAwardRuleModelVO) {
             return DefaultTreeFactory.StrategyAwardData.builder().awardId(awardId).build();
         }
+
+        //查询规则树 并返回规则树对应的节点等信息
         RuleTreeVO ruleTreeVO = repository.queryRuleTreeVOByTreeId(strategyAwardRuleModelVO.getRuleModels());
         if (null == ruleTreeVO) {
             throw new RuntimeException("存在抽奖策略配置的规则模型 Key，未在库表 rule_tree、rule_tree_node、rule_tree_line 配置对应的规则树信息 " + strategyAwardRuleModelVO.getRuleModels());
@@ -100,5 +103,15 @@ public class DefaultRaffleStrategy extends AbstractRaffleStrategy implements IRa
     @Override
     public Map<String, Integer> queryAwardRuleLockCount(String[] treeIds) {
         return repository.queryAwardRuleLockCount(treeIds);
+    }
+    @Override
+    public List<RuleWeightVO> queryAwardRuleWeight(Long strategyId) {
+        return repository.queryAwardRuleWeight(strategyId);
+    }
+
+    @Override
+    public List<RuleWeightVO> queryAwardRuleWeightByActivityId(Long activityId) {
+        Long strategyId = repository.queryStrategyIdByActivityId(activityId);
+        return queryAwardRuleWeight(strategyId);
     }
 }

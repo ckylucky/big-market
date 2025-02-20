@@ -56,4 +56,5 @@ public interface IActivityRepository {
 
     ActivityAccountEntity queryRaffleActivityAccountEntity(String userId, Long activityId);
 
+    Integer queryRaffleActivityAccountPartakeCount(Long activityId, String userId);
 }

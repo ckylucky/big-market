@@ -1,5 +1,8 @@
 package com.cky.domain.strategy.service.raffle;
 
+import com.cky.domain.strategy.model.valobj.RuleWeightVO;
+
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,4 +20,14 @@ public interface IRaffleRules {
      * @return key 规则树，value rule_lock 加锁值
      */
     Map<String,Integer> queryAwardRuleLockCount(String[] treeIds);
+
+    List<RuleWeightVO> queryAwardRuleWeightByActivityId(Long activityId);
+    /**
+     * 查询奖品权重配置
+     *
+     * @param strategyId 策略ID
+     * @return 权重规则
+     */
+    List<RuleWeightVO> queryAwardRuleWeight(Long strategyId);
+
 }

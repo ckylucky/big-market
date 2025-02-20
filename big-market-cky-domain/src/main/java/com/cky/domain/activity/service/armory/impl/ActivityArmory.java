@@ -38,7 +38,6 @@ public class ActivityArmory implements IActivityArmory, IActivityDispatch {
     public void assembleActivitySkuByActivityId(Long activityId) {
         List<ActivitySkuEntity> activitySkuEntities =repository.queryActivitySkuListByActivityId(activityId);
         for (ActivitySkuEntity activitySkuEntity:activitySkuEntities){
-            cacheActivitySkuStockCount(activitySkuEntity.getSku(),activitySkuEntity.getStockCount());
             //预热sku活动库存
             cacheActivitySkuStockCount(activitySkuEntity.getSku(), activitySkuEntity.getStockCountSurplus());
             //预热sku对应的活动次数【查询时预热到缓存】
