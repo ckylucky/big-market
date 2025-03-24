@@ -55,7 +55,7 @@ mini-db-router:
         driver-class-name: com.mysql.cj.jdbc.Driver
         url: jdbc:mysql://124.220.83.101:3306/big_market?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&useSSL=true
         username: root
-        password: kaitxy@123
+        password: kaimysql@123
         type-class-name: com.zaxxer.hikari.HikariDataSource
         pool:
           pool-name: Retail_HikariCP
@@ -70,7 +70,7 @@ mini-db-router:
         driver-class-name: com.mysql.cj.jdbc.Driver
         url: jdbc:mysql://124.220.83.101:3306/big_market_01?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&useSSL=true
         username: root
-        password: kaitxy@123
+        password: kaimysql@123
         type-class-name: com.zaxxer.hikari.HikariDataSource
         pool:
           pool-name: Retail_HikariCP
@@ -85,7 +85,7 @@ mini-db-router:
         driver-class-name: com.mysql.cj.jdbc.Driver
         url: jdbc:mysql://124.220.83.101:3306/big_market_02?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&useSSL=true
         username: root
-        password: kaitxy@123
+        password: kaimysql@123
         type-class-name: com.zaxxer.hikari.HikariDataSource
         pool:
           pool-name: Retail_HikariCP
@@ -103,19 +103,11 @@ mybatis:
 
 # Redis
 redis:
-  sdk:
-    config:
-      host: 124.220.83.101
-      port: 16379
-      pool-size: 10
-      min-idle-size: 5
-      idle-timeout: 30000
-      connect-timeout: 5000
-      retry-attempts: 3
-      retry-interval: 1000
-      ping-interval: 60000
-      keep-alive: true
-
+  host: ${REDIS_HOST:124.220.83.101}
+  port: 6379
+  #password: ${REDIS_PASSWORD:slb@1234}
+  password: kairedis@123
+  database: 3
 # 日志
 logging:
   level:

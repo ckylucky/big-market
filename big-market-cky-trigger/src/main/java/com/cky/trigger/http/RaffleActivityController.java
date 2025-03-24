@@ -127,8 +127,6 @@ public class RaffleActivityController implements IRaffleActivityService {
     @Override
     public Response<ActivityDrawResponseDTO> draw(@RequestBody ActivityDrawRequestDTO request) {
         try {
-
-
             //1、参数校验
             Long activityId = request.getActivityId();
             String userId = request.getUserId();
@@ -222,6 +220,7 @@ public class RaffleActivityController implements IRaffleActivityService {
                     .build();
         }
     }
+
     /**
      * 判断是否签到接口
      * <p>
@@ -251,10 +250,10 @@ public class RaffleActivityController implements IRaffleActivityService {
                     .build();
         }
     }
+
     @RequestMapping(value = "query_user_activity_account", method = RequestMethod.POST)
     @Override
-    public Response<UserActivityAccountResponseDTO> queryUserActivityAccount(UserActivityAccountRequestDTO request) {
-
+    public Response<UserActivityAccountResponseDTO> queryUserActivityAccount(@RequestBody UserActivityAccountRequestDTO request) {
         try {
             Long activityId = request.getActivityId();
             String userId = request.getUserId();
@@ -264,8 +263,6 @@ public class RaffleActivityController implements IRaffleActivityService {
             }
             //查询额度信息
             ActivityAccountEntity activityAccountEntity=raffleActivityAccountQuotaService.queryRaffleActivityAccountEntity(userId,activityId);
-
-
              UserActivityAccountResponseDTO userActivityAccountResponseDTO = UserActivityAccountResponseDTO.builder()
                           .totalCount(activityAccountEntity.getTotalCount())
                           .totalCountSurplus(activityAccountEntity.getTotalCountSurplus())
@@ -280,7 +277,6 @@ public class RaffleActivityController implements IRaffleActivityService {
                     .info(ResponseCode.SUCCESS.getInfo())
                     .data(userActivityAccountResponseDTO) // 只要不为空，则表示已经做了签到
                     .build();
-
         } catch (Exception e) {
             log.info("查询用户活动账户失败 userId:{} activityId:{} e:{}", request.getUserId(), request.getActivityId(),e);
             return Response.<UserActivityAccountResponseDTO>builder()
