@@ -220,6 +220,7 @@ public class ActivityRepository implements IActivityRepository {
             return false;
         }
 
+
         // 1. 按照cacheKey decr 后的值，如 99、98、97 和 key 组成为库存锁的key进行使用。
         // 2. 加锁为了兜底，如果后续有恢复库存，手动处理等【运营是人来操作，会有这种情况发放，系统要做防护】，也不会超卖。因为所有的可用库存key，都被加锁了。
         // 3. 设置加锁时间为活动到期 + 延迟1天
